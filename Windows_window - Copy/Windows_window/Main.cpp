@@ -62,200 +62,6 @@ static const GLchar* FRAGMENT_SOURCE =
 }\
 ";
 
-static const GLfloat VERTEX_DATA[] =
-{
-	/*Relative cordinates
-	//1st vertex
-	0.0f, 0.75f,
-	1.0f, 0.0f, 0.0f,
-	0.5f, -1.0f,
-	//2nd vertex
-	-0.75f, -0.75f,
-	0.0f, 1.0f, 0.0f,
-	0.0f, -0.2f,
-	//3rd vertex
-	0.75f, -0.75f,
-	0.0f, 0.0f, 1.0f,
-	1.0f, -0.2
-	*/
-
-	//Pixel cordinates
-	////1st vertex
-	//800.0f, 0.0f,
-	//1.0f, 0.0f, 0.0f,
-	//0.0f, .0f,
-	////2nd vertex
-	//800.0f, 600.0f,
-	//0.0f, 1.0f, 0.0f,
-	//0.0f, 1.0f,
-	////3rd vertex
-	//00.0f, 0.0f,
-	//0.0f, 0.0f, 1.0f,
-	//1.0f, 0.0f,
-	////4rd vertex
-	//0.0f, 600.0f,
-	//0.0f, 0.0f, 1.0f,
-	//1.0f, 1.0f
-
-	/*
-	//1st vertex
-	0.0, 1.0, 0.0,
-	0.0f, 0.0f, 0.0f,
-	1, 1,
-	//2nd vertex
-	-1.0, -1.0, -1.0,
-	1.0f, 0.0f, 0.0f,
-	1, 0.0f,
-	//3rd vertex
-	1.0, -1.0, -1.0,
-	0.0f, 1.0f, 0.0f,
-	0.0f, 0.0f,
-	//4rd vertex
-	1.0, -1.0, 1.0,
-	0.0f, 0.0f, 1.0f,
-	0.0f, 1,
-	//5th vertex
-	-1.0, -1.0, 1.0,
-	1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f
-	*/
-
-	//Wall
-	//1st vertex
-	0.1, 0.0, 0.5,
-	1.0f, 1.0f, 0.0f,
-	1, 1,
-	//2nd vertex
-	0.9, 0.0, 0.5,
-	1.0f, 1.0f, 0.0f,
-	1, 0.0f,
-	//3rd vertex
-	0.1, 0.9, 0.5,
-	1.0f, 1.0f, 0.0f,
-	0.0f, 0.0f,
-	//4rd vertex
-	0.9, 0.9, 0.5,
-	1.0f, 1.0f, 0.0f,
-	0.0f, 1,
-	
-	//Floor
-	//1st vertex
-	0.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 0.0f,
-	1, 1,
-	//2nd vertex
-	1.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 0.0f,
-	1, 0.0f,
-	//3rd vertex
-	0.0f, 0.0f, 1.0f,
-	0.0f, 0.0f, 0.0f,
-	0.0f, 0.0f,
-	//4rd vertex
-	1.0f, 0.0f, 1.0f,
-	0.0f, 0.0f, 0.0f,
-	0.0f, 1,
-
-};
-
-static const GLfloat FLOOR_VERTICES[] =
-{
-	//1st vertex
-	0.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 0.0f,
-	0.0f, 0.0f,
-	//2nd vertex
-	1.0f, 0.0f, 0.0f,
-	0.0f, 0.0f, 0.0f,
-	0.0f, 0.0f,
-	//3rd vertex
-	0.0f, 0.0f, 1.0f,
-	0.0f, 0.0f, 0.0f,
-	0.0f, 0.0f,
-	//4rd vertex
-	1.0f, 0.0f, 1.0f,
-	0.0f, 0.0f, 0.0f,
-	0.0f, 0.0f,
-};
-
-static const GLfloat WALL_VERTICES[] =
-{
-	//1st vertex
-	0.1f, 0.0f, 0.1f,
-	1.0f, 1.0f, 0.0f,
-	0.0f, 0.0f,
-	//2nd vertex
-	0.9f, 0.0f, 0.1f,
-	1.0f, 1.0f, 0.0f,
-	1.0f, 0.0f,
-	//3rd vertex
-	0.1f, 0.9f, 0.1f,
-	1.0f, 1.0f, 0.0f,
-	0.0f, -1.0f,
-	//4rd vertex
-	0.9f, 0.9f, 0.1f,
-	1.0f, 1.0f, 0.0f,
-	1.0f, -1.0f,
-	//5th vertex
-	0.9f, 0.9f, 0.9f,
-	1.0f, 1.0f, 0.0f,
-	0.0f, 0.0f,
-	//6th vertex
-	0.9f, 0.9f, 0.9f,
-	1.0f, 1.0f, 0.0f,
-	1.0f, 0.0f,
-	//7th vertex
-	0.1f, 0.0f, 0.9f,
-	1.0f, 1.0f, 0.0f,
-	0.0f, 0.0f,
-	//8th vertex
-	0.9f, 0.0f, 0.9f,
-	1.0f, 1.0f, 0.0f,
-	1.0f, 0.0f,
-
-};
-
-static const GLuint FLOOR_INDICES[] =
-{
-	0, 1, 2,
-	2, 1, 3,
-};
-
-static const GLuint WALL_INDICES[] =
-{
-	//1st wall
-
-	//2nd wall
-	2, 3, 4,
-	4, 3, 5,
-
-	//3rd wall
-	5, 6, 7,
-	7, 6, 8,
-
-	//4th wall
-	8, 1, 7,
-	7, 8, 2,
-
-	0, 1, 2,
-	2, 1, 3,
-};
-
-static const GLuint INDEX_DATA[] =
-{
-	/*
-	0, 1, 2,
-	0, 2, 3,
-	0, 3, 4,
-	0, 4, 1
-	*/
-	0, 1, 2,
-	2, 1, 3,
-
-	4, 5, 6,
-	6, 5, 7,
-};
-
 void checkShaderErrors(GLuint shader)
 {
 	GLint result;
@@ -267,10 +73,9 @@ void checkShaderErrors(GLuint shader)
 	errorMessage(std::string(errorMsg));
 }
 
-bool loadOBJ(const char* path, std::vector<float> &out_vertices, std::vector<int> &out_indices)
+bool loadOBJ(const char* path, std::vector<GLfloat> &out_vertices, std::vector<GLuint> &out_indices)
 {
-
-	std::vector< int > vertexIndices, uvIndices;
+	std::vector< GLuint > vertexIndices, uvIndices;
 	std::vector< glm::vec3 > temp_vertices;
 	std::vector< glm::vec2 > temp_uvs;
 
@@ -283,7 +88,6 @@ bool loadOBJ(const char* path, std::vector<float> &out_vertices, std::vector<int
 
 	while (1)
 	{
-
 		char lineHeader[128];
 		// read the first word of the line
 		int res = fscanf(file, "%s", lineHeader);
@@ -312,18 +116,19 @@ bool loadOBJ(const char* path, std::vector<float> &out_vertices, std::vector<int
 				errorMessage("File can't be read by our simple parser");
 				return false;
 			}
-			vertexIndices.push_back(vertexIndex[0]-1);
-			vertexIndices.push_back(vertexIndex[1]-1);
-			vertexIndices.push_back(vertexIndex[2]-1);
-			uvIndices.push_back(uvIndex[0]-1);
-			uvIndices.push_back(uvIndex[1]-1);
-			uvIndices.push_back(uvIndex[2]-1);
+			vertexIndices.push_back(vertexIndex[0] - 1);
+			vertexIndices.push_back(vertexIndex[1] - 1);
+			vertexIndices.push_back(vertexIndex[2] - 1);
+			uvIndices.push_back(uvIndex[0] - 1);
+			uvIndices.push_back(uvIndex[1] - 1);
+			uvIndices.push_back(uvIndex[2] - 1);
 			
 		}
 	}
 
-	std::vector<float> Coords;
-	std::vector<float> texCoords;
+	/**
+	std::vector<float> Coords; //vec3
+	std::vector<float> texCoords; //vec2
 
 	for (unsigned int i = 0; i < temp_vertices.size(); i++)
 	{
@@ -337,21 +142,31 @@ bool loadOBJ(const char* path, std::vector<float> &out_vertices, std::vector<int
 		texCoords.push_back(temp_uvs[i].x);
 		texCoords.push_back(temp_uvs[i].y);
 	}
+	/**/
 
-	out_vertices.resize(vertexIndices.size() * 5);
-	unsigned int index, index2;
-
+	out_vertices.clear();
 	for (unsigned int i = 0; i < vertexIndices.size(); i++)
 	{
-		index = vertexIndices[i];
-		out_vertices[5 * index] = Coords[vertexIndices[i]];
-		out_vertices[5 * index + 1] = Coords[vertexIndices[i]];
-		out_vertices[5 * index + 2] = Coords[vertexIndices[i]];
+		out_vertices.push_back(temp_vertices[vertexIndices[i]].x);
+		out_vertices.push_back(temp_vertices[vertexIndices[i]].y);
+		out_vertices.push_back(temp_vertices[vertexIndices[i]].z);
 
-		index2 = uvIndices[i];
-		out_vertices[5 * index2 + 3] = texCoords[uvIndices[i]];
-		out_vertices[5 * index2 + 4] = texCoords[uvIndices[i]];
+		out_vertices.push_back(temp_uvs[uvIndices[i]].x);
+		out_vertices.push_back(temp_uvs[uvIndices[i]].y);
 	}
+
+	/**
+	for (unsigned int i = 0; i < vertexIndices.size(); ++i)
+	{
+		out_vertices.push_back(Coords[vertexIndices[i]]);  //x
+		out_vertices.push_back(Coords[vertexIndices[i]+1]); //y
+		out_vertices.push_back(Coords[vertexIndices[i]+2]); //z
+
+		out_vertices.push_back(texCoords[uvIndices[i]]); //x
+		out_vertices.push_back(texCoords[uvIndices[i]+1]); //x
+	}
+	/**/
+
 	out_indices = vertexIndices;
 	return true;
 }
@@ -441,24 +256,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GLuint vertexShaderObject = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
 
-	std::string vertexShader = "\
-							   	 attribute vec2 position;\
-								 	varying vec2 texcoord;\
-										void main()\
-											{\
-												gl_Position = vec4(position, 0.0, 1.0);\
-													texcoord = position * vec2(0.5) + vec2(0.5);\
-														}";
-
-	const char *vertexShaderSource = vertexShader.c_str();
 
 	glShaderSource(vertexShaderObject, 1u, &VERTEX_SOURCE, NULL);
-
-	std::string fragmentShader = "void main(){"
-		"gl_FragColor = vec4(0, 1, 0,1);"
-		"}";
-
-	const char *fragmentShaderSource = fragmentShader.c_str();
 
 	glShaderSource(fragmentShaderObject, 1u, &FRAGMENT_SOURCE, NULL);
 
@@ -502,71 +301,30 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	assert(positionIndex >= 0);
 	glEnableVertexAttribArray(positionIndex);
 
-	GLint colorIndex = glGetAttribLocation(programObject, "attrColor");
+	//GLint colorIndex = glGetAttribLocation(programObject, "attrColor");
 	//assert(colorIndex >= 0);
-	glEnableVertexAttribArray(colorIndex);
-
+	//glEnableVertexAttribArray(colorIndex);
+	
 	GLint textureIndex = glGetAttribLocation(programObject, "textCoord");
 	assert(textureIndex >= 0);
 	glEnableVertexAttribArray(textureIndex);
 	
 
-	//Get uniform locations
-
-	const GLint projLocation = glGetUniformLocation(programObject, "unifProjection");
-
-	//
-
 	//Create vertex and index buffers
-
-	//GLuint buffers[2];
-
-	//glGenBuffers(2, buffers);
-	//glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(VERTEX_DATA), VERTEX_DATA, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0u);
-
-
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(INDEX_DATA), INDEX_DATA, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
-
-
-	//GLuint buffers[4];
-	//glGenBuffers(4, buffers);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(FLOOR_VERTICES), FLOOR_VERTICES, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0u);
-
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(FLOOR_INDICES), FLOOR_INDICES, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
-
-
-	//glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(WALL_VERTICES), WALL_VERTICES, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0u);
-
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(WALL_INDICES), WALL_INDICES, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
 
 	GLuint buffers[2];
 	glGenBuffers(2, buffers);
 
-	std::vector<float> VertexData;
-	std::vector<int> IndexData;
-	bool res = loadOBJ("Teapot.obj", VertexData, IndexData);
-
-
+	std::vector<GLfloat> VertexData;
+	std::vector<GLuint> IndexData;
+	bool res = loadOBJ("pyramid.obj", VertexData, IndexData);
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, VertexData.size()*sizeof(GLfloat), VertexData.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0u);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexData), IndexData.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, IndexData.size()*sizeof(GLuint), IndexData.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
 
 	//
@@ -595,29 +353,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	glActiveTexture(GL_TEXTURE0);
 
-	//Get uniforms
 
-	//GLint uniform_Alpha;
-	//uniform_Alpha = glGetUniformLocation(programObject, "unifAlpha");
-	//glUniform1f(uniform_Alpha, 1.0f);
-
-	//
-
-	//Create projection
-	/*
-	const glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
-
-	glUseProgram(programObject);
-	glUniformMatrix4fv(projLocation, 1,GL_FALSE, reinterpret_cast<const float*>(&projection));
-
-	glUseProgram(0u);
-	*/
-	//
-
-	//Blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	//
+	////Blending
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	////
 
 	glClearColor(1, 1, 1, 0);
 
@@ -640,7 +380,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GLint viewIndex = glGetUniformLocation(programObject, "unifView");
 	assert(viewIndex != -1);
 
-	glm::mat4 viewTransform = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 viewTransform = glm::translate(glm::vec3(0.0f, 0.0f, -2.5f));
 	glUniformMatrix4fv(viewIndex, 1, GL_FALSE, reinterpret_cast<float*>(&viewTransform));
 
 	//World stuff
@@ -652,12 +392,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	glUniformMatrix4fv(worldIndex, 1, GL_FALSE, reinterpret_cast<float*>(&worldTransform));
 
 	glUseProgram(0u);
-	//
-	/*
-	//Scissoring
-	glEnable(GL_SCISSOR_TEST);
-	glScissor(100, 100, 600, 400);
-	*/
+
 	for (;;)
 	{
 		MSG msg;
@@ -689,75 +424,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		//Camera rotation
 		Camerarotation += 1.0f;
-		glm::mat4 viewTransform = glm::translate(glm::vec3(-0.5f, -0.5f, -2.5f))* glm::rotate(Camerarotation, glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 viewTransform = glm::translate(glm::vec3(-0.5f, -0.5f, -2.5f))* glm::rotate(Camerarotation, glm::vec3(1.0f, 1.0f, 1.0f));
 		glUniformMatrix4fv(viewIndex, 1, GL_FALSE, reinterpret_cast<float*>(&viewTransform));
 		
-
-		//glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-		//attrib, amount of dimensional attributes, type of atttributes , normalized?, reference, pointer to data
-		//glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<GLvoid*>(0));
-		//glVertexAttribPointer(colorIndex, 3, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<GLvoid*>(12));
-		//glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<GLvoid*>(24));
-
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-		//glBindTexture(GL_TEXTURE_2D, texture);
-		//Floor draw here maybe
-		//glDrawElements(GL_TRIANGLES, 12u, GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
-		//glBindTexture(GL_TEXTURE_2D, 0);
-		////glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
-		//glBindBuffer(GL_ARRAY_BUFFER, 0u);
-
-
-		////Stencil setup1
-		//glEnable(GL_STENCIL_TEST);
-		////Hexa is 255
-		//glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		//glStencilMask(0xFF);
-		//glDepthMask(GL_FALSE);
-
-		////Floor
-		////glUniform1f(uniform_Alpha, 1.0f);
-		//glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-
-		//glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<float*>(0));
-		//glVertexAttribPointer(colorIndex, 3, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<float*>(3 * sizeof(float)));
-		//glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<GLvoid*>(24));
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
-		//glBindBuffer(GL_ARRAY_BUFFER, 0u);
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
-
-		////Wall
-		//glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
-		//glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<float*>(0));
-		//glVertexAttribPointer(colorIndex, 3, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<float*>(3 * sizeof(float)));
-		//glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 32, reinterpret_cast<GLvoid*>(24));
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
-		//glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
-
-
-		////Stencil setup2
-		//glStencilFunc(GL_EQUAL, 1, 0xFF);
-		//glStencilMask(0x00);
-		//glDepthMask(GL_TRUE);
-		//
-		////TODO: Reflection
-
-		//////glUniform1f(uniform_Alpha, 0.5f);
-		////worldTransform = glm::scale(glm::vec3(1.0f, -1.0f, 1.0f));
-		////glUniformMatrix4fv(worldIndex, 1, GL_FALSE, reinterpret_cast<float*>(&worldTransform));
-		////glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
-
-		////Disable stencil testing
-		//glDisable(GL_STENCIL_TEST);
-		//
 
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 		//attrib, amount of dimensional attributes, type of atttributes , normalized?, reference, pointer to data
 		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(0));
 		glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(12));
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
 		glDrawElements(GL_TRIANGLES, IndexData.size(), GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
 		glUseProgram(0u);
