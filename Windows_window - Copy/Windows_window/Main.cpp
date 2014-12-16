@@ -126,46 +126,21 @@ bool loadOBJ(const char* path, std::vector<GLfloat> &out_vertices, std::vector<G
 		}
 	}
 
-	/**
-	std::vector<float> Coords; //vec3
-	std::vector<float> texCoords; //vec2
+	out_vertices.resize(vertexIndices.size() * 5);
+	unsigned int index, index2;
 
-	for (unsigned int i = 0; i < temp_vertices.size(); i++)
-	{
-		Coords.push_back(temp_vertices[i].x);
-		Coords.push_back(temp_vertices[i].y);
-		Coords.push_back(temp_vertices[i].z);
-	}
-
-	for (unsigned int i = 0; i < temp_uvs.size(); i++)
-	{
-		texCoords.push_back(temp_uvs[i].x);
-		texCoords.push_back(temp_uvs[i].y);
-	}
-	/**/
-
-	out_vertices.clear();
 	for (unsigned int i = 0; i < vertexIndices.size(); i++)
 	{
-		out_vertices.push_back(temp_vertices[vertexIndices[i]].x);
-		out_vertices.push_back(temp_vertices[vertexIndices[i]].y);
-		out_vertices.push_back(temp_vertices[vertexIndices[i]].z);
+		index = vertexIndices[i];
+		out_vertices[5 * index] = temp_vertices[vertexIndices[i]].x;
+		out_vertices[5 * index + 1] = temp_vertices[vertexIndices[i]].y;
+		out_vertices[5 * index + 2] = temp_vertices[vertexIndices[i]].z;
 
-		out_vertices.push_back(temp_uvs[uvIndices[i]].x);
-		out_vertices.push_back(temp_uvs[uvIndices[i]].y);
+		index2 = uvIndices[i];
+		out_vertices[5 * index2 + 3] = temp_uvs[uvIndices[i]].x;
+		out_vertices[5 * index2 + 4] = temp_uvs[uvIndices[i]].y;
 	}
 
-	/**
-	for (unsigned int i = 0; i < vertexIndices.size(); ++i)
-	{
-		out_vertices.push_back(Coords[vertexIndices[i]]);  //x
-		out_vertices.push_back(Coords[vertexIndices[i]+1]); //y
-		out_vertices.push_back(Coords[vertexIndices[i]+2]); //z
-
-		out_vertices.push_back(texCoords[uvIndices[i]]); //x
-		out_vertices.push_back(texCoords[uvIndices[i]+1]); //x
-	}
-	/**/
 
 	out_indices = vertexIndices;
 	return true;
@@ -415,19 +390,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//Draw
 		glUseProgram(programObject);
 
-		///*
 		//World rotation happens here
 		rotation += 1.0f;
 		glm::mat4 worldTransform = glm::mat4();// glm::translate(glm::vec3(0.0f, 0.0f, -5.0f)) * glm::rotate(rotation, glm::vec3(0.0f, 1.0f, 1.0f));
 		glUniformMatrix4fv(worldIndex, 1, GL_FALSE, reinterpret_cast<float*>(&worldTransform));
-		//*/
 
 		//Camera rotation
 		Camerarotation += 1.0f;
 		glm::mat4 viewTransform = glm::translate(glm::vec3(-0.5f, -0.5f, -2.5f))* glm::rotate(Camerarotation, glm::vec3(1.0f, 1.0f, 1.0f));
 		glUniformMatrix4fv(viewIndex, 1, GL_FALSE, reinterpret_cast<float*>(&viewTransform));
 		
-
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 		//attrib, amount of dimensional attributes, type of atttributes , normalized?, reference, pointer to data
 		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(0));
