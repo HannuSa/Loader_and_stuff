@@ -2,10 +2,12 @@
 #include <cassert>
 #include <iostream>
 #include "GL/glew.h"
+#include "GL/wglew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "lodepng.h"
 #include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/transform.hpp">
 
@@ -31,7 +33,7 @@ static const GLchar* VERTEX_SOURCE =
 "attribute vec3 attrPosition;\n"
 "attribute vec3 attrColor;\n"
 
-"attribute vec3 textCoord;\n"
+"attribute vec2 textCoord;\n"
 
 "uniform mat4 unifProjection;\n"
 "uniform mat4 unifView\n;"
@@ -61,6 +63,7 @@ static const GLchar* FRAGMENT_SOURCE =
  gl_FragColor = texture2D(mytexture, f_textCoord);\
 }\
 ";
+
 
 void checkShaderErrors(GLuint shader)
 {
@@ -223,7 +226,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//OpenGl and shader stuff
 
 	GLenum err = glewInit();
+	const int r = wglSwapIntervalEXT(1);
+	assert(r != 0);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	//Create shaders
 	GLuint programObject = glCreateProgram();
@@ -275,10 +281,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GLint positionIndex = glGetAttribLocation(programObject, "attrPosition");
 	assert(positionIndex >= 0);
 	glEnableVertexAttribArray(positionIndex);
-
-	//GLint colorIndex = glGetAttribLocation(programObject, "attrColor");
-	//assert(colorIndex >= 0);
-	//glEnableVertexAttribArray(colorIndex);
 	
 	GLint textureIndex = glGetAttribLocation(programObject, "textCoord");
 	assert(textureIndex >= 0);
@@ -287,12 +289,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//Create vertex and index buffers
 
-	GLuint buffers[2];
-	glGenBuffers(2, buffers);
-
+	GLuint buffers[4];
+	glGenBuffers(4, buffers);
+	
 	std::vector<GLfloat> VertexData;
 	std::vector<GLuint> IndexData;
-	bool res = loadOBJ("pyramid.obj", VertexData, IndexData);
+	bool res = loadOBJ("Teapot.obj", VertexData, IndexData);
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 	glBufferData(GL_ARRAY_BUFFER, VertexData.size()*sizeof(GLfloat), VertexData.data(), GL_STATIC_DRAW);
@@ -300,6 +302,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, IndexData.size()*sizeof(GLuint), IndexData.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
+
+	std::vector<GLfloat> VertexData2;
+	std::vector<GLuint> IndexData2;
+	bool res2 = loadOBJ("Monkeyhead.obj", VertexData2, IndexData2);
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+	glBufferData(GL_ARRAY_BUFFER, VertexData2.size()*sizeof(GLfloat), VertexData2.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0u);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, IndexData2.size()*sizeof(GLuint), IndexData2.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
 
 	//
@@ -315,7 +329,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	unsigned width, height;
 	std::vector<unsigned char> image;
 
-	unsigned error = lodepng::decode(image, width, height, "Penta.png");
+	unsigned error = lodepng::decode(image, width, height, "handle_bump.png");
 	assert(error == 0);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
@@ -323,7 +337,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	GLint uniform_mytexture;
-	uniform_mytexture = glGetUniformLocation(programObject, "Penta.png");
+	uniform_mytexture = glGetUniformLocation(programObject, "handle_bump.png");
 	glUniform1i(uniform_mytexture, 0);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -334,7 +348,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	////
 
-	glClearColor(1, 1, 1, 0);
+	glClearColor(0, 1, 0, 0);
 
 	//Setting uniforms
 
@@ -347,7 +361,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//FOV, aspect ratio, Near draw, Far draw
 	glm::mat4 projectionTransform = glm::perspective(60.0f, 800.0f/600.0f, 0.01f, 1000.0f);
-	glUniformMatrix4fv(projectionIndex, 1, GL_FALSE, reinterpret_cast<float*>(&projectionTransform));
+	//glUniformMatrix4fv(projectionIndex, 1, GL_FALSE, reinterpret_cast<float*>(&projectionTransform));
+	glUniformMatrix4fv(projectionIndex, 1, GL_FALSE, glm::value_ptr(projectionTransform));
 
 	//View
 	float Camerarotation = 1;
@@ -355,7 +370,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GLint viewIndex = glGetUniformLocation(programObject, "unifView");
 	assert(viewIndex != -1);
 
-	glm::mat4 viewTransform = glm::translate(glm::vec3(0.0f, 0.0f, -2.5f));
+	glm::mat4 viewTransform = glm::translate(glm::vec3(0.0f, 0.0f, -5.0f));
 	glUniformMatrix4fv(viewIndex, 1, GL_FALSE, reinterpret_cast<float*>(&viewTransform));
 
 	//World stuff
@@ -363,10 +378,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	GLint worldIndex = glGetUniformLocation(programObject, "unifWorld");
 	assert(worldIndex != -1);
 
-	glm::mat4 worldTransform = glm::translate(glm::vec3(0.0f, 0.0f, -2.0f));
+	glm::mat4 worldTransform = glm::translate(glm::vec3(0.0f, 0.0f, -1.0f));
 	glUniformMatrix4fv(worldIndex, 1, GL_FALSE, reinterpret_cast<float*>(&worldTransform));
 
 	glUseProgram(0u);
+
+	float dt = 0.0;
 
 	for (;;)
 	{
@@ -383,33 +400,64 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		}
 
+		LARGE_INTEGER StartingTime, EndingTime, ElapsedMicroseconds;
+		LARGE_INTEGER Frequency;
+
+		QueryPerformanceFrequency(&Frequency);
+		QueryPerformanceCounter(&StartingTime);
+
+
 		//Stencil mask default is 0, clear 0 is 0
 		glStencilMask(0xFF);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
 
 		//Draw
 		glUseProgram(programObject);
 
 		//World rotation happens here
 		rotation += 1.0f;
-		glm::mat4 worldTransform = glm::mat4();// glm::translate(glm::vec3(0.0f, 0.0f, -5.0f)) * glm::rotate(rotation, glm::vec3(0.0f, 1.0f, 1.0f));
+		worldTransform = /*glm::mat4(); glm::translate(glm::vec3(0.0f, 0.0f, -5.0f)) **/ glm::rotate(rotation, glm::vec3(0.0f, dt, 0.0f));
 		glUniformMatrix4fv(worldIndex, 1, GL_FALSE, reinterpret_cast<float*>(&worldTransform));
 
-		//Camera rotation
-		Camerarotation += 1.0f;
-		glm::mat4 viewTransform = glm::translate(glm::vec3(-0.5f, -0.5f, -2.5f))* glm::rotate(Camerarotation, glm::vec3(1.0f, 1.0f, 1.0f));
-		glUniformMatrix4fv(viewIndex, 1, GL_FALSE, reinterpret_cast<float*>(&viewTransform));
-		
+		dt = 0;
+
+		////Camera rotation
+		//Camerarotation += 1.0f;
+		//glm::mat4 viewTransform = glm::translate(glm::vec3(-0.5f, -0.5f, -2.5f))* glm::rotate(Camerarotation, glm::vec3(1.0f, 1.0f, 1.0f));
+		//glUniformMatrix4fv(viewIndex, 1, GL_FALSE, reinterpret_cast<float*>(&viewTransform));
+		//
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 		//attrib, amount of dimensional attributes, type of atttributes , normalized?, reference, pointer to data
 		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(0));
 		glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(12));
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
+
 		glDrawElements(GL_TRIANGLES, IndexData.size(), GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
+
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+		//attrib, amount of dimensional attributes, type of atttributes , normalized?, reference, pointer to data
+		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(0));
+		glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(12));
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
+
+		glDrawElements(GL_TRIANGLES, IndexData2.size(), GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
+
 		glUseProgram(0u);
 
 		SwapBuffers(hdc);
+
+		QueryPerformanceCounter(&EndingTime);
+		ElapsedMicroseconds.QuadPart = EndingTime.QuadPart - StartingTime.QuadPart;
+
+		std::cout << "Time used: " << std::endl;
+		ElapsedMicroseconds.QuadPart *= 100000000;
+		ElapsedMicroseconds.QuadPart /= Frequency.QuadPart;
+
+		std::cout << ElapsedMicroseconds.QuadPart << std::endl;
+		dt = dt + ElapsedMicroseconds.QuadPart / 1000;
 
 	}
 
@@ -417,7 +465,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	glDeleteTextures(1, &texture);
 
 	//Destroy buffers
-	glDeleteBuffers(2, buffers);
+	glDeleteBuffers(4, buffers);
 
 	//OpenGL context destroy
 	wglMakeCurrent(GetDC(windowHandle), NULL);
