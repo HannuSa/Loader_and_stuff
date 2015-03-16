@@ -10,6 +10,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/transform.hpp">
+#include "GameObject.h"
 
 LRESULT CALLBACK proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -289,12 +290,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//Create vertex and index buffers
 
-	GLuint buffers[4];
-	glGenBuffers(4, buffers);
+	GLuint buffers[2];
+	glGenBuffers(2, buffers);
 	
 	std::vector<GLfloat> VertexData;
 	std::vector<GLuint> IndexData;
-	bool res = loadOBJ("Teapot.obj", VertexData, IndexData);
+	bool res = loadOBJ("plane2.obj", VertexData, IndexData);
 
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 	glBufferData(GL_ARRAY_BUFFER, VertexData.size()*sizeof(GLfloat), VertexData.data(), GL_STATIC_DRAW);
@@ -304,17 +305,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, IndexData.size()*sizeof(GLuint), IndexData.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
 
-	std::vector<GLfloat> VertexData2;
-	std::vector<GLuint> IndexData2;
-	bool res2 = loadOBJ("Monkeyhead.obj", VertexData2, IndexData2);
-
-	glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
-	glBufferData(GL_ARRAY_BUFFER, VertexData2.size()*sizeof(GLfloat), VertexData2.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0u);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, IndexData2.size()*sizeof(GLuint), IndexData2.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0u);
 
 	//
 
@@ -326,18 +316,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	unsigned width, height;
-	std::vector<unsigned char> image;
+	GameObject *Object = new GameObject();
 
-	unsigned error = lodepng::decode(image, width, height, "handle_bump.png");
-	assert(error == 0);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, Object->Renderable.width, Object->Renderable.height, 
+		0, GL_RGBA, GL_UNSIGNED_BYTE, Object->Renderable.imageData.data());
 	GLenum glerr = glGetError();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	GLint uniform_mytexture;
-	uniform_mytexture = glGetUniformLocation(programObject, "handle_bump.png");
+	uniform_mytexture = glGetUniformLocation(programObject, "mytexture");
 	glUniform1i(uniform_mytexture, 0);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -422,11 +409,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		dt = 0;
 
-		////Camera rotation
-		//Camerarotation += 1.0f;
-		//glm::mat4 viewTransform = glm::translate(glm::vec3(-0.5f, -0.5f, -2.5f))* glm::rotate(Camerarotation, glm::vec3(1.0f, 1.0f, 1.0f));
-		//glUniformMatrix4fv(viewIndex, 1, GL_FALSE, reinterpret_cast<float*>(&viewTransform));
-		//
+		//Camera rotation
+		Camerarotation += 1.0f;
+		glm::mat4 viewTransform = glm::translate(glm::vec3(-0.5f, -0.5f, -20.5f))* glm::rotate(Camerarotation, glm::vec3(1.0f, 1.0f, 1.0f));
+		glUniformMatrix4fv(viewIndex, 1, GL_FALSE, reinterpret_cast<float*>(&viewTransform));
+		
+
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 		//attrib, amount of dimensional attributes, type of atttributes , normalized?, reference, pointer to data
 		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(0));
@@ -435,18 +423,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
 
 		glDrawElements(GL_TRIANGLES, IndexData.size(), GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
-
-		glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
-		//attrib, amount of dimensional attributes, type of atttributes , normalized?, reference, pointer to data
-		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(0));
-		glVertexAttribPointer(textureIndex, 2, GL_FLOAT, GL_FALSE, 20, reinterpret_cast<GLvoid*>(12));
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
-
-		glDrawElements(GL_TRIANGLES, IndexData2.size(), GL_UNSIGNED_INT, reinterpret_cast<GLvoid*>(0));
-
-		glUseProgram(0u);
-
+		
 		SwapBuffers(hdc);
 
 		QueryPerformanceCounter(&EndingTime);
@@ -465,7 +442,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	glDeleteTextures(1, &texture);
 
 	//Destroy buffers
-	glDeleteBuffers(4, buffers);
+	glDeleteBuffers(2, buffers);
 
 	//OpenGL context destroy
 	wglMakeCurrent(GetDC(windowHandle), NULL);
