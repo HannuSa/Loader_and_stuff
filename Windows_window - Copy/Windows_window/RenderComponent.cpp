@@ -3,8 +3,6 @@
 
 RenderComponent::RenderComponent() :Component()
 {
-	unsigned error = lodepng::decode(imageData, width, height, "Dude.png");
-	assert(error == 0);
 }
 
 

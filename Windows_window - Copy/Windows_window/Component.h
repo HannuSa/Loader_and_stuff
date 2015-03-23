@@ -2,7 +2,7 @@
 class Component
 {
 public:
-	Component();
-	~Component();
+	Component() { }
+	virtual ~Component() { }
 };
 

@@ -11,6 +11,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/transform.hpp">
 #include "GameObject.h"
+#include "TransformComponent.h"
+#include "RenderComponentFactory.h"
 
 LRESULT CALLBACK proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -318,8 +320,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	GameObject *Object = new GameObject();
 
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, Object->Renderable.width, Object->Renderable.height, 
-		0, GL_RGBA, GL_UNSIGNED_BYTE, Object->Renderable.imageData.data());
+	RenderComponentFactory factory;
+	RenderComponent *Renderable = factory.CreateRenderComponent();;
+	Object->addComponent(Renderable);
+	Renderable = Object->getComponent<RenderComponent>();
+
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, Renderable->width, Renderable->height,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, Renderable->imageData.data());
 	GLenum glerr = glGetError();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 

@@ -10,12 +10,7 @@ GameObject::~GameObject()
 {
 }
 
-Component* GameObject::getComponent()
+void GameObject::addComponent(Component* _component)
 {
-	std::unordered_map<const std::type_info*, Component>::iterator it;
-
-	const std::type_info *t;
-
-	it = _components.find(t);
-	return &(it->second);
+	_components.insert(std::make_pair(&typeid(*_component), _component));
 }
